@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>สูตรแนวทางการวิเคราะห์ - พลังหมุนจักรวาล 639</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  /* พื้นหลังธีมจักรวาลสีฟ้าครามลึก */
+  body { 
+    background: radial-gradient(circle at center, #0f2b46 0%, #051329 70%, #020813 100%);
+    color: #fff; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    padding: 20px; 
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* --- โซนเอฟเฟกต์พลังตัวเลข 639 หมุนรอบกล่อง --- */
+  .cosmic-orbit-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    margin: 40px auto;
+  }
+
+  /* วงโคจรที่ 1: หมุนตามเข็มนาฬิกา (เลข 639) */
+  .orbit-track-1 {
+    position: absolute;
+    top: -40px; left: -40px; right: -40px; bottom: -40px;
+    border: 1px dashed rgba(0, 191, 255, 0.15);
+    border-radius: 24px;
+    pointer-events: none;
+    animation: orbitRotate 25s linear infinite;
+  }
+  .orbit-track-1::before {
+    content: "6  3  9";
+    position: absolute;
+    top: -15px; left: 50%;
+    transform: translateX(-50%);
+    color: #00ffff;
+    font-weight: bold;
+    font-size: 16px;
+    text-shadow: 0 0 10px #00ffff, 0 0 20px #0072ff;
+    letter-spacing: 15px;
+  }
+  .orbit-track-1::after {
+    content: "3  9  6";
+    position: absolute;
+    bottom: -15px; left: 50%;
+    transform: translateX(-50%);
+    color: #00ffff;
+    font-weight: bold;
+    font-size: 16px;
+    text-shadow: 0 0 10px #00ffff, 0 0 20px #0072ff;
+    letter-spacing: 15px;
+  }
+
+  /* วงโคจรที่ 2: หมุนทวนเข็มนาฬิกา (เพิ่มมิติความลึก) */
+  .orbit-track-2 {
+    position: absolute;
+    top: -70px; left: -70px; right: -70px; bottom: -70px;
+    border: 1px dashed rgba(0, 191, 255, 0.08);
+    border-radius: 32px;
+    pointer-events: none;
+    animation: orbitRotateReverse 35s linear infinite;
+  }
+  .orbit-track-2::before {
+    content: "9 6 3";
+    position: absolute;
+    top: 50%; left: -25px;
+    transform: translateY(-50%) rotate(-90deg);
+    color: rgba(0, 210, 255, 0.7);
+    font-weight: bold;
+    font-size: 14px;
+    text-shadow: 0 0 8px rgba(0, 210, 255, 0.6);
+    letter-spacing: 10px;
+  }
+  .orbit-track-2::after {
+    content: "6 3 9";
+    position: absolute;
+    top: 50%; right: -25px;
+    transform: translateY(-50%) rotate(90deg);
+    color: rgba(0, 210, 255, 0.7);
+    font-weight: bold;
+    font-size: 14px;
+    text-shadow: 0 0 8px rgba(0, 210, 255, 0.6);
+    letter-spacing: 10px;
+  }
+
+  /* แอนิเมชันการหมุน */
+  @keyframes orbitRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  @keyframes orbitRotateReverse {
+    from { transform: rotate(360deg); }
+    to { transform: rotate(0deg); }
+  }
+  /* ------------------------------------------- */
+
+  /* กล่องโปรแกรมสไตล์โฮโลแกรมอวกาศ */
+  .container { 
+    width: 100%;
+    background: rgba(10, 34, 64, 0.85); 
+    padding: 25px; 
+    border-radius: 16px; 
+    border: 1px solid rgba(0, 191, 255, 0.35); 
+    box-shadow: 0 0 30px rgba(0, 149, 255, 0.25), inset 0 0 15px rgba(0, 191, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* หัวข้อใหม่: สูตรแนวทางการวิเคราะห์ */
+  h2 { 
+    text-align: center; 
+    color: #00d2ff; 
+    margin-bottom: 25px; 
+    font-size: 24px; 
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(0, 210, 255, 0.6);
+    letter-spacing: 1px;
+  }
+
+  .form-group { margin-bottom: 18px; }
+  label { display: block; margin-bottom: 6px; color: #8bc34a; font-size: 14px; font-weight: 500; }
+  
+  input { 
+    width: 100%; 
+    padding: 12px; 
+    border-radius: 8px; 
+    border: 1px solid rgba(0, 191, 255, 0.4); 
+    background: rgba(5, 19, 39, 0.9); 
+    color: #fff; 
+    text-align: center; 
+    font-size: 20px; 
+    font-weight: bold; 
+    outline: none;
+    transition: all 0.3s ease;
+  }
+  input:focus {
+    border-color: #00ffff;
+    box-shadow: 0 0 12px rgba(0, 255, 255, 0.4);
+  }
+
+  /* ปุ่มกดสไตล์นีออนอวกาศ */
+  button { 
+    width: 100%; 
+    padding: 14px; 
+    background: linear-gradient(135deg, #0072ff 0%, #00d2ff 100%); 
+    border: none; 
+    color: #fff; 
+    font-weight: bold; 
+    font-size: 18px; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    margin-top: 10px; 
+    box-shadow: 0 4px 15px rgba(0, 114, 255, 0.4);
+    transition: all 0.3s ease;
+  }
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 210, 255, 0.6);
+  }
+
+  .result-box { display: none; margin-top: 25px; border-top: 1px solid rgba(0, 191, 255, 0.2); padding-top: 20px; text-align: center; }
+  .section-title { color: #8bc34a; margin: 18px 0 10px 0; font-size: 15px; font-weight: bold; letter-spacing: 0.5px; }
+  .circle-container { display: flex; gap: 12px; justify-content: center; margin-bottom: 15px; flex-wrap: wrap; }
+  
+  .circle { background: #00d2ff; color: #020813; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px; box-shadow: 0 0 12px rgba(0, 210, 255, 0.5); }
+  .circle-gray { background: rgba(255,255,255,0.1); color: #fff; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; border: 1px solid rgba(255,255,255,0.2); }
+  
+  .tag { background: rgba(5, 19, 39, 0.6); color: #00d2ff; border: 1px solid rgba(0, 191, 255, 0.4); padding: 8px 18px; border-radius: 20px; font-size: 16px; font-weight: bold; display: inline-block; margin: 5px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+</style>
+</head>
+<body>
+
+<!-- ตัวหุ้มระบบกล่องคำนวณและวงโคจรตัวเลข -->
+<div class="cosmic-orbit-wrapper">
+  
+  <!-- เส้นวงโคจรที่หมุนรอบกล่อง -->
+  <div class="orbit-track-1"></div>
+  <div class="orbit-track-2"></div>
+
+  <!-- กล่องโปรแกรมสูตรแนวทางการวิเคราะห์ -->
+  <div class="container">
+    <h2>🌌 สูตรแนวทางการวิเคราะห์ 🌌</h2>
+    <div class="form-group">
+      <label>ผล 3 ตัวบน (งวดล่าสุด)</label>
+      <input type="text" id="top3" maxlength="3" placeholder="เช่น 214">
+    </div>
+    <div class="form-group">
+      <label>ผล 2 ตัวล่าง (งวดล่าสุด)</label>
+      <input type="text" id="bot2" maxlength="2" placeholder="เช่น 71">
+    </div>
+    <button onclick="calculate()">คำนวณแนวทาง</button>
+
+    <div id="resultBox" class="result-box">
+      <!-- เจาะ 3 ตัวตรง/โต๊ด -->
+      <div class="circle-container" id="top3_tail"></div>
+
+      <div class="section-title">⚡ วิ่ง - รูด (2 ตัวเด่น)</div>
+      <div class="circle-container" id="run_digits"></div>
+
+      <div class="section-title">✨ วิน 6 ตัวเด่น (ไม่ซ้ำ)</div>
+      <div class="circle-container" id="win_digits"></div>
+
+      <div class="section-title">🎯 เจาะ 2 ตัว บน/ล่าง (5 หาง - ไม่ซ้ำ/ไม่เบิ้ล)</div>
+      <div class="circle-container" id="bot2_tail"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function calculate() {
+  let top3Str = document.getElementById('top3').value.trim();
+  let bot2Str = document.getElementById('bot2').value.trim();
+
+  if(top3Str.length !== 3 || bot2Str.length !== 2 || isNaN(top3Str) || isNaN(bot2Str)) {
+    alert('กรุณากรอกข้อมูลตัวเลขให้ถูกต้อง (บน 3 หลัก, ล่าง 2 หลัก)');
+    return;
+  }
+
+ let r_on = Number(top3Str[0]);
+ let s_on = Number(top3Str[1]);
+ let n_on = Number(top3Str[2]);
+  let s_lang = Number(bot2Str[0]);
+  let n_lang = Number(bot2Str[1]);
+
+  let run1 = n_on;
+  let run2 = (n_on + 5) % 10;
+
+  let rawWin = [
+  r_on,
+  s_on,
+  n_on,
+  run2,
+  Number(bot2Str[0]),
+  Number(bot2Str[1])
+];
+  let winArray = [];
+  
+  for(let num of rawWin) {
+    if(!winArray.includes(num)) {
+      winArray.push(num);
+    } else {
+      let alternative = (num + 5) % 10;
+      if(!winArray.includes(alternative)) {
+        winArray.push(alternative);
+      } else {
+        for(let i = 0; i <= 9; i++) {
+          if(!winArray.includes(i)) {
+            winArray.push(i);
+            break;
+          }
+        }
+      }
+    }
+  }
+  winArray = winArray.slice(0, 6);
+
+  // 1. วิ่ง - รูด
+  document.getElementById('run_digits').innerHTML = `
+    <div class="circle">${run1}</div>
+    <div class="circle">${run2}</div>
+  `;
+
+  // 2. วิน 6 ตัวเด่น
+  document.getElementById('win_digits').innerHTML = winArray.map(n => `<div class="circle-gray">${n}</div>`).join('');
+
+  // 3. เจาะ 2 ตัว บน/ล่าง
+  let tail2Array = [];
+
+for(let i = 0; i < winArray.length; i++){
+  for(let j = i + 1; j < winArray.length; j++){
+    tail2Array.push(
+      `${winArray[i]}${winArray[j]}`
+    );
+  }
+}
+
+tail2Array = tail2Array.slice(0,5);
+  
+  document.getElementById('bot2_tail').innerHTML = tail2Array.map(n => `<span class="tag">${n}</span>`).join('');
+
+  // 4. เจาะ 3 ตัวตรง
+  let tail3Array = [
+ `${winArray[0]}${winArray[1]}${winArray[2]}`,
+ `${winArray[0]}${winArray[1]}${winArray[3]}`,
+ `${winArray[0]}${winArray[2]}${winArray[4]}`
+];
+
+  document.getElementById('top3_tail').innerHTML = tail3Array.map(n => `<span class="tag">${n}</span>`).join('');
+
+  document.getElementById('resultBox').style.display = 'block';
+}
+</script>
+
+</body>
+</html>
