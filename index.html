@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>สูตรแนวทางการวิเคราะห์ - พลังหมุนจักรวาล 639</title>
+<title>สูตรแนวทางการวิเคราะห์ </title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   
@@ -203,24 +203,24 @@
     <button onclick="calculate()">คำนวณแนวทาง</button>
 
     <div id="resultBox" class="result-box">
-      <!-- เจาะ 3 ตัวตรง/โต๊ด -->
-      <div class="circle-container" id="top3_tail"></div>
+     
 
-      <div class="section-title">⚡ วิ่ง - รูด (2 ตัวเด่น)</div>
+      <div class="section-title">⚡ วิ่ง - รูด </div>
       <div class="circle-container" id="run_digits"></div>
 
-      <div class="section-title">✨ วิน 6 ตัวเด่น (ไม่ซ้ำ)</div>
+      <div class="section-title">✨ วิน 6 ตัวเด่น </div>
       <div class="circle-container" id="win_digits"></div>
 
-      <div class="section-title">🎯 เจาะ 2 ตัว บน/ล่าง (5 หาง - ไม่ซ้ำ/ไม่เบิ้ล)</div>
+      <div class="section-title">🎯 เจาะ 2 ตัว บน/ล่าง</div>
       <div class="circle-container" id="bot2_tail"></div>
-    </div>
-  </div>
+     </div>
+     <!-- เจาะ 3 ตัวตรง/โต๊ด -->
+      <div class="circle-container" id="top3_tail"></div>
 
-</div>
+ </div>
 
-<script>
-function calculate() {
+ <script>
+ function calculate() {
   let top3Str = document.getElementById('top3').value.trim();
   let bot2Str = document.getElementById('bot2').value.trim();
 
@@ -296,7 +296,7 @@ tail2Array = tail2Array.slice(0,5);
  `${winArray[0]}${winArray[1]}${winArray[2]}`,
  `${winArray[0]}${winArray[1]}${winArray[3]}`,
  `${winArray[0]}${winArray[2]}${winArray[4]}`
-];
+ ];
 
   document.getElementById('top3_tail').innerHTML = tail3Array.map(n => `<span class="tag">${n}</span>`).join('');
 
