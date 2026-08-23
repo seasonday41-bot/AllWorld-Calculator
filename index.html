@@ -3,314 +3,245 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>สูตรแนวทางการวิเคราะห์ - พลังจักรวาล 639</title>
+<title>Dynamic Lottery AI V3</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  
-  /* ตั้งค่าพื้นหลังโดยใช้ภาพจักรวาลเกลียวคลื่นของคุณ */
-  body { 
-    background-image: url('https://unsplash.com'); /* เผื่อภาพหลักโหลดช้า */
-    background-image: url('image_Va0qGj.png'); /* เปลี่ยนเป็นชื่อไฟล์ภาพจักรวาลของคุณหากรันในเครื่อง */
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    color: #fff; 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-    padding: 20px; 
+  body {
     min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background:
+      radial-gradient(circle at 50% 10%, rgba(255,215,0,.10), transparent 30%),
+      radial-gradient(circle at 20% 80%, rgba(0,191,255,.12), transparent 35%),
+      linear-gradient(160deg, #040814 0%, #09162d 52%, #060b18 100%);
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, sans-serif;
+    padding: 18px;
     overflow-x: hidden;
-    position: relative;
   }
-
-  /* เลเยอร์โปร่งแสงทับพื้นหลังเพื่อความละมุนและอ่านง่าย */
-  body::before {
-    content: "";
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(5, 15, 30, 0.4); /* บังแสงพื้นหลังเล็กน้อยเพื่อให้ตัวหนังสือเด่นขึ้น */
-    z-index: 0;
-    pointer-events: none;
-  }
-
-  /* --- ระบบแอนิเมชัน พลังเลขเด่น 639 หมุนวนเปล่งประกาย --- */
   #cosmic-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    pointer-events: none; /* เพื่อให้สามารถคลิกปุ่มบนเว็บได้ปกติ */
+    position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
   }
-
-  /* กล่องโปรแกรมสไตล์โฮโลแกรมกระจกแก้ว (Glassmorphism) เพื่อให้เข้ากับภาพอวกาศ */
-  .container { 
-    width: 100%;
-    max-width: 420px;
-    background: rgba(10, 25, 50, 0.7); 
-    padding: 25px; 
-    border-radius: 20px; 
-    border: 1px solid rgba(255, 215, 0, 0.3); /* กรอบทองบางๆ เข้ากับตัวเลขในภาพ */
-    box-shadow: 0 0 30px rgba(0, 191, 255, 0.2), inset 0 0 15px rgba(255, 215, 0, 0.1);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    position: relative;
-    z-index: 2; /* อยู่เหนือตัวเลขที่ลอย */
-    margin: 40px auto;
+  .container {
+    width: 100%; max-width: 440px; margin: 24px auto; padding: 22px;
+    position: relative; z-index: 1;
+    background: rgba(8,20,43,.78);
+    border: 1px solid rgba(255,215,0,.28);
+    border-radius: 22px;
+    box-shadow: 0 18px 50px rgba(0,0,0,.35), inset 0 0 24px rgba(255,215,0,.04);
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
   }
-
-  h2 { 
-    text-align: center; 
-    color: #ffd700; /* สีทองอร่ามแมตช์กับตัวเลขในจักรวาล */
-    margin-bottom: 25px; 
-    font-size: 24px; 
-    font-weight: bold;
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
-    letter-spacing: 1px;
+  h1 { text-align:center; font-size:22px; color:#ffd86a; margin-bottom:6px; }
+  .sub { text-align:center; color:#a9b8d2; font-size:13px; margin-bottom:22px; }
+  .form-group { margin-bottom:14px; }
+  label { display:block; margin-bottom:7px; font-size:13px; color:#b9c9e5; }
+  input {
+    width:100%; padding:14px; border-radius:12px; border:1px solid rgba(255,215,0,.26);
+    background:rgba(1,9,24,.72); color:#fff; text-align:center; font-size:22px; font-weight:800;
+    outline:none;
   }
-
-  .form-group { margin-bottom: 18px; }
-  label { display: block; margin-bottom: 6px; color: #8bc34a; font-size: 14px; font-weight: 500; }
-  
-  input { 
-    width: 100%; 
-    padding: 12px; 
-    border-radius: 8px; 
-    border: 1px solid rgba(255, 215, 0, 0.4); 
-    background: rgba(5, 15, 35, 0.8); 
-    color: #fff; 
-    text-align: center; 
-    font-size: 20px; 
-    font-weight: bold; 
-    outline: none;
-    transition: all 0.3s ease;
+  input:focus { border-color:#ffd76a; box-shadow:0 0 0 3px rgba(255,215,0,.10); }
+  button {
+    width:100%; padding:14px; border:0; border-radius:12px; margin-top:5px;
+    font-size:17px; font-weight:900; color:#101010; cursor:pointer;
+    background:linear-gradient(135deg,#ffad32,#ffe06c);
+    box-shadow:0 8px 22px rgba(255,174,50,.25);
   }
-  input:focus {
-    border-color: #ffd700;
-    box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+  .result-box { display:none; margin-top:22px; }
+  .card {
+    background:rgba(3,12,29,.62); border:1px solid rgba(255,255,255,.08);
+    border-radius:16px; padding:15px; margin-bottom:12px;
   }
-
-  /* ปุ่มกดนีออนทอง-ส้ม เข้ากับแสงศูนย์กลางกาแล็กซี */
-  button { 
-    width: 100%; 
-    padding: 14px; 
-    background: linear-gradient(135deg, #ff8c00 0%, #ffd700 100%); 
-    border: none; 
-    color: #000; 
-    font-weight: bold; 
-    font-size: 18px; 
-    border-radius: 8px; 
-    cursor: pointer; 
-    margin-top: 10px; 
-    box-shadow: 0 4px 15px rgba(255, 140, 0, 0.4);
-    transition: all 0.3s ease;
+  .title { color:#8edcff; font-size:13px; font-weight:800; margin-bottom:10px; }
+  .result-line { font-size:16px; font-weight:800; }
+  .index { font-size:30px; color:#ffd76a; font-weight:900; }
+  .digits { display:flex; flex-wrap:wrap; gap:9px; justify-content:center; }
+  .circle {
+    width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(145deg,#ffe373,#ffb62f); color:#111; font-size:21px; font-weight:900;
+    box-shadow:0 0 16px rgba(255,200,70,.25);
   }
-  button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.7);
+  .circle.alt { background:rgba(255,255,255,.08); color:#fff; border:1px solid rgba(255,255,255,.12); }
+  .tags { display:flex; flex-wrap:wrap; gap:8px; }
+  .tag {
+    padding:8px 11px; border-radius:10px; background:rgba(255,215,0,.08);
+    border:1px solid rgba(255,215,0,.18); color:#ffe28a; font-weight:800;
   }
-
-  .result-box { display: none; margin-top: 25px; border-top: 1px solid rgba(255, 215, 0, 0.2); padding-top: 20px; text-align: center; }
-  .section-title { color: #8bc34a; margin: 18px 0 10px 0; font-size: 15px; font-weight: bold; }
-  .circle-container { display: flex; gap: 12px; justify-content: center; margin-bottom: 15px; flex-wrap: wrap; }
-  
-  .circle { background: #ffd700; color: #020813; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 22px; box-shadow: 0 0 12px rgba(255, 215, 0, 0.6); }
-  .circle-gray { background: rgba(255,255,255,0.1); color: #fff; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; border: 1px solid rgba(255,255,255,0.2); }
-  
-  .tag { background: rgba(5, 15, 35, 0.6); color: #ffd700; border: 1px solid rgba(255, 215, 0, 0.4); padding: 8px 18px; border-radius: 20px; font-size: 16px; font-weight: bold; display: inline-block; margin: 5px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+  .analysis { line-height:1.55; color:#d7e3f6; }
+  .warning { color:#ffcf78; }
+  .ok { color:#9ae6b4; }
+  .pair-run { font-size:28px; font-weight:900; color:#fff; text-align:center; letter-spacing:6px; }
+  .small { color:#8293b1; font-size:12px; margin-top:8px; text-align:center; }
 </style>
 </head>
 <body>
-
-<!-- พื้นผิวกราฟิกสำหรับรันเลขมงคล 639 หมุนวน -->
 <canvas id="cosmic-canvas"></canvas>
 
-<!-- กล่องโปรแกรมสูตรแนวทางการวิเคราะห์ -->
 <div class="container">
-  <h2>🌌 สูตรแนวทางการวิเคราะห์ 🌌</h2>
+  <h1>🚀 สมองกลพยากรณ์แฝดยืดหยุ่น V3</h1>
+  <div class="sub">ระบบดัชนีพรีเมียม • คำนวณเปอร์เซ็นต์ความเสถียรเรียลไทม์</div>
+
   <div class="form-group">
-    <label>ผล 3 ตัวบน (งวดล่าสุด)</label>
-    <input type="text" id="top3" maxlength="3" placeholder="เช่น 214">
+    <label>ผล 3 ตัวบนล่าสุด</label>
+    <input id="top3" inputmode="numeric" maxlength="3" placeholder="เช่น 214">
   </div>
   <div class="form-group">
-    <label>ผล 2 ตัวล่าง (งวดล่าสุด)</label>
-    <input type="text" id="bot2" maxlength="2" placeholder="เช่น 71">
+    <label>ผล 2 ตัวล่างล่าสุด</label>
+    <input id="bot2" inputmode="numeric" maxlength="2" placeholder="เช่น 71">
   </div>
   <button onclick="calculate()">คำนวณแนวทาง</button>
 
   <div id="resultBox" class="result-box">
-    
+    <div class="card">
+      <div class="title">📊 ผลรางวัลรอบก่อน</div>
+      <div id="previousResult" class="result-line"></div>
+    </div>
 
-    <div class="section-title">⚡ วิ่ง - รูด (2 ตัวเด่น)</div>
-    <div class="circle-container" id="run_digits"></div>
+    <div class="card">
+      <div class="title">📈 Probability Index</div>
+      <div id="probability" class="index"></div>
+      <div class="small">ดัชนีจากกติกาในสูตร V3 ไม่ใช่ความน่าจะเป็นทางสถิติที่รับประกันผล</div>
+    </div>
 
-    <div class="section-title">✨ วิน 6 ตัวเด่น (ไม่ซ้ำ)</div>
-    <div class="circle-container" id="win_digits"></div>
+    <div class="card">
+      <div class="title">🎯 ตัวดิ่งสแกนเด่น (วิ่ง/รูด)</div>
+      <div id="runDigits" class="pair-run"></div>
+    </div>
 
-    <div class="section-title">🎯 เจาะ 2 ตัว บน/ล่าง (5 หาง - ไม่ซ้ำ/ไม่เบิ้ล)</div>
-    <div class="circle-container" id="bot2_tail"></div>
-  
-     <div class="circle-container" id="top3_tail"></div>
+    <div class="card">
+      <div class="title">🔑 แกนเลขวินกลุ่มเล็ก 5 ตัว</div>
+      <div id="winDigits" class="digits"></div>
+    </div>
+
+    <div class="card">
+      <div class="title">💸 เจาะชุด 2 ตัวบน-ล่าง • 8 ชุด</div>
+      <div id="pairs" class="tags"></div>
+    </div>
+
+    <div class="card">
+      <div class="title">🏆 เจาะชุด 3 ตัวตรง-โต๊ด • 4 ชุด</div>
+      <div id="triples" class="tags"></div>
+    </div>
+
+    <div class="card">
+      <div class="title">🔮 บทวิเคราะห์ทิศทางหน้างาน</div>
+      <div id="analysis" class="analysis"></div>
+    </div>
+  </div>
 </div>
 
 <script>
-// --- โค้ด JavaScript สร้างแอนิเมชันเลข 639 หมุนวนอิงตามเกลียวกาแล็กซี ---
 const canvas = document.getElementById('cosmic-canvas');
 const ctx = canvas.getContext('2d');
-
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
-
-const numbersPool = ['6', '3', '9'];
-const particles = [];
-const particleCount = 45; // จำนวนหนาแน่นของเลขเด่นที่ลอยวน
-
-class NumberParticle {
-  constructor() {
-    this.reset();
-    // สุ่มตำแหน่งเริ่มต้นให้อยู่ห่างกันกระจายทั่วจอ
-    this.angle = Math.random() * Math.PI * 2;
-    this.radius = Math.random() * (Math.max(canvas.width, canvas.height) * 0.6);
+function resizeCanvas(){ canvas.width=innerWidth; canvas.height=innerHeight; }
+addEventListener('resize',resizeCanvas); resizeCanvas();
+const particles=[]; const pool=['6','3','9'];
+class Particle{
+  constructor(){ this.reset(true); }
+  reset(first=false){
+    this.text=pool[Math.floor(Math.random()*pool.length)];
+    this.angle=Math.random()*Math.PI*2;
+    this.radius=first?Math.random()*Math.max(canvas.width,canvas.height)*.65:Math.max(canvas.width,canvas.height)*.65;
+    this.speed=.004+Math.random()*.008;
+    this.radial=.15+Math.random()*.35;
+    this.size=11+Math.random()*15;
+    this.alpha=.08+Math.random()*.22;
   }
-
-  reset() {
-    this.text = numbersPool[Math.floor(Math.random() * numbersPool.length)];
-    this.angle = 0;
-    this.radius = Math.max(canvas.width, canvas.height) * 0.6; // เริ่มจากวงนอกสุด
-    this.speed = 0.01 + Math.random() * 0.015; // ความเร็วหมุนวน
-    this.radialSpeed = 0.5 + Math.random() * 0.8; // ความเร็วในการดึงเข้าจุดศูนย์กลาง
-    this.fontSize = 12 + Math.random() * 16;
-    this.opacity = 0.1 + Math.random() * 0.6;
-  }
-
-  update() {
-    this.angle += this.speed; // หมุนรอบจุดศูนย์กลาง
-    this.radius -= this.radialSpeed; // ค่อยๆ คลานเข้าตรงกลางตามเกลียวในรูปภาพ
-
-    // ถ้าวิ่งเข้าถึงใจกลางแล้ว ให้รีเซ็ตออกไปอยู่ขอบนอกใหม่เหมือนเดิม
-    if (this.radius < 20) {
-      this.reset();
-    }
-  }
-
-  draw() {
-    // คำนวณอิงจากจุดกึ่งกลางหน้าจอ
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
-    const x = centerX + Math.cos(this.angle) * this.radius;
-    const y = centerY + Math.sin(this.angle) * this.radius;
-
-    ctx.save();
-    ctx.globalAlpha = this.opacity;
-    ctx.fillStyle = '#ffd700'; // สีทองเรืองแสงเข้ากับธีมเกลียว
-    ctx.shadowBlur = 10;
-    ctx.shadowColor = '#ff8c00'; // แสงออร่าสีส้มทอง
-    ctx.font = `bold ${this.fontSize}px Arial`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(this.text, x, y);
-    ctx.restore();
+  update(){ this.angle+=this.speed; this.radius-=this.radial; if(this.radius<10)this.reset(); }
+  draw(){
+    const x=canvas.width/2+Math.cos(this.angle)*this.radius;
+    const y=canvas.height/2+Math.sin(this.angle)*this.radius;
+    ctx.save(); ctx.globalAlpha=this.alpha; ctx.fillStyle='#ffd76a';
+    ctx.font=`700 ${this.size}px Arial`; ctx.textAlign='center'; ctx.fillText(this.text,x,y); ctx.restore();
   }
 }
+for(let i=0;i<38;i++) particles.push(new Particle());
+(function animate(){ ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(animate); })();
 
-// สร้างอนุภาคเลข 639 ทั้งหมด
-for (let i = 0; i < particleCount; i++) {
-  particles.push(new NumberParticle());
+function combinations(arr, choose=2){
+  const out=[];
+  for(let i=0;i<arr.length;i++){
+    for(let j=i+1;j<arr.length;j++) out.push([arr[i],arr[j]]);
+  }
+  return out;
 }
 
-// Loop รันการขยับหมุนเคลื่อนไหวแบบ Real-time
-function animate() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  particles.forEach(p => {
-    p.update();
-    p.draw();
-  });
-  requestAnimationFrame(animate);
+// PRNG แบบ seed คงที่สำหรับหน้าเว็บ เพื่อให้ input เดิมได้ค่า fine tune เดิมทุกครั้ง
+function seededRandom(seed){
+  let t = seed >>> 0;
+  t += 0x6D2B79F5;
+  t = Math.imul(t ^ t >>> 15, t | 1);
+  t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+  return ((t ^ t >>> 14) >>> 0) / 4294967296;
 }
-animate();
 
-// --- โค้ดส่วนคำนวณสถิติตามระบบเดิมของคุณ ---
-function calculate() {
-  let top3Str = document.getElementById('top3').value.trim();
-  let bot2Str = document.getElementById('bot2').value.trim();
+function calculate(){
+  const threeDigits=document.getElementById('top3').value.trim();
+  const twoDigits=document.getElementById('bot2').value.trim();
 
-  if(top3Str.length !== 3 || bot2Str.length !== 2 || isNaN(top3Str) || isNaN(bot2Str)) {
-    alert('กรุณากรอกข้อมูลตัวเลขให้ถูกต้อง (บน 3 หลัก, ล่าง 2 หลัก)');
+  if(!/^\d{3}$/.test(threeDigits) || !/^\d{2}$/.test(twoDigits)){
+    alert('❌ ข้อมูลไม่ถูกต้อง กรุณากรอกเลขบน 3 หลัก และล่าง 2 หลัก');
     return;
   }
 
-  let r_on = Number(top3Str[0]);
-  let s_on = Number(top3Str[1]);
-  let n_on = Number(top3Str[2]);
-  let s_lang = Number(bot2Str[0]);
-  let n_lang = Number(bot2Str[1]);
+  const h=Number(threeDigits[0]);
+  const t=Number(threeDigits[1]);
+  const u=Number(threeDigits[2]);
+  const l_t=Number(twoDigits[0]);
+  const l_u=Number(twoDigits[1]);
 
-  let run1 = n_on;
-  let run2 = (n_on + 5) % 10;
+  // 2. คำนวณเด่นรูดประจำงวด
+  const d1=(h+t+u)%10;
+  let d2=(l_t+l_u)%10;
+  if(d1===d2) d2=(d2+3)%10;
 
-  let rawWin = [run1, run2, r_on, s_on, s_lang, n_lang];
-  let winArray = [];
-  
-  for(let num of rawWin) {
-    if(!winArray.includes(num)) {
-      winArray.push(num);
-    } else {
-      let alternative = (num + 5) % 10;
-      if(!winArray.includes(alternative)) {
-        winArray.push(alternative);
-      } else {
-        for(let i = 0; i <= 9; i++) {
-          if(!winArray.includes(i)) {
-            winArray.push(i);
-            break;
-          }
-        }
-      }
-    }
+  // 3. ตรวจจับ 3 สัญญาณเลขไหล
+  const isTwin=(h===t)||(t===u)||(h===u)||(l_t===l_u);
+  const isBrother=Math.abs(l_t-l_u)===1 || (l_t===0&&l_u===9) || (l_t===9&&l_u===0);
+
+  // 4. Dynamic Probability Score
+  let baseScore=5.0;
+  if(isTwin) baseScore+=6.54;
+  if(isBrother) baseScore+=4.21;
+  const seed=d1+d2+h+l_u;
+  const fineTune=0.11 + seededRandom(seed)*(0.99-0.11);
+  const probabilityIndex=Math.round((baseScore+fineTune)*100)/100;
+
+  // 5. WIN 5 ตัว
+  const winSet=new Set([d1,d2,(h+1)%10,(l_u+2)%10,5]);
+  while(winSet.size<5){
+    winSet.add((winSet.size*3+7)%10);
   }
-  winArray = winArray.slice(0, 6);
+  const winList=[...winSet].sort((a,b)=>a-b);
 
-  // 1. แสดงผล วิ่ง - รูด
-  document.getElementById('run_digits').innerHTML = `
-    <div class="circle">${run1}</div>
-    <div class="circle">${run2}</div>
-  `;
+  // 6. เจาะชุด
+  const pairList=combinations(winList,2);
+  const set2d=pairList.slice(0,8).map(p=>`${p[0]}${p[1]}`);
+  const set3d=pairList.slice(0,4).map(p=>`${winList[0]}${p[0]}${p[1]}`);
 
-  // 2. แสดงผล วิน 6 ตัวเด่น
-  document.getElementById('win_digits').innerHTML = winArray.map(n => `<div class="circle-gray">${n}</div>`).join('');
+  document.getElementById('previousResult').textContent=`บน ${threeDigits} | ล่าง ${twoDigits}`;
+  document.getElementById('probability').textContent=`${probabilityIndex.toFixed(2)}%`;
+  document.getElementById('runDigits').textContent=`(${d1}) - (${d2})`;
+  document.getElementById('winDigits').innerHTML=winList.map(n=>`<div class="circle alt">${n}</div>`).join('');
+  document.getElementById('pairs').innerHTML=set2d.map(n=>`<span class="tag">${n}</span>`).join('');
+  document.getElementById('triples').innerHTML=set3d.map(n=>`<span class="tag">${n}</span>`).join('');
 
-  // 3. เจาะ 2 ตัว บน/ล่าง
- let tail2Array = [];
-
-for(let i = 0; i < winArray.length; i++){
-  for(let j = i + 1; j < winArray.length; j++){
-    tail2Array.push(
-      `${winArray[i]}${winArray[j]}`
-    );
+  let text=''; let cls='';
+  if(isTwin){
+    text="⚠️ ตรวจพบสัญญาณแฝดไหลต่อเนื่อง สมาชิกควรติด 'รูดเบิ้ล บน-ล่าง' ไว้เซฟทุน";
+    cls='warning';
+  }else if(isBrother){
+    text='⚠️ ตรวจพบสัญญาณเลขพี่น้องบดบี้ รอบนี้เน้นเจาะสั้นตามโพย ไม่บานเบอะ';
+    cls='warning';
+  }else{
+    text='✔️ สถานการณ์เลขเดินปกติ เล่นกระจายงบตามสัดส่วนได้เลย';
+    cls='ok';
   }
-}
+  const analysis=document.getElementById('analysis');
+  analysis.className=`analysis ${cls}`;
+  analysis.textContent=text;
 
-tail2Array = tail2Array.slice(0,5);
-  document.getElementById('bot2_tail').innerHTML = tail2Array.map(n => `<span class="tag">${n}</span>`).join('');
-
-  // 4. เจาะ 3 ตัวตรง
- let tail3Array = [
- `${winArray[0]}${winArray[1]}${winArray[2]}`,
- `${winArray[0]}${winArray[1]}${winArray[3]}`,
- `${winArray[0]}${winArray[2]}${winArray[4]}`
-];
-  document.getElementById('top3_tail').innerHTML = tail3Array.map(n => `<span class="tag">${n}</span>`).join('');
-
-  document.getElementById('resultBox').style.display = 'block';
+  document.getElementById('resultBox').style.display='block';
+  document.getElementById('resultBox').scrollIntoView({behavior:'smooth',block:'start'});
 }
 </script>
-
 </body>
 </html>
