@@ -140,12 +140,12 @@
     </div>
 
     <div class="card">
-      <div class="title">💸 เจาะชุด 2 ตัวบน-ล่าง • 8 ชุด</div>
+      <div class="title">💸 เจาะชุด 2 ตัวบน-ล่าง • 12 ชุด</div>
       <div id="pairs" class="tags"></div>
     </div>
 
     <div class="card">
-      <div class="title">🏆 เจาะชุด 3 ตัวตรง-โต๊ด • 4 ชุด</div>
+      <div class="title">🏆 เจาะชุด 3 ตัวตรง-โต๊ด • 6 ชุด</div>
       <div id="triples" class="tags"></div>
     </div>
 
@@ -158,11 +158,31 @@
 
 <script>
 
-function combinations(arr, choose=2){
+function combinations(arr){
   const out=[];
   for(let i=0;i<arr.length;i++){
-    for(let j=i+1;j<arr.length;j++) out.push([arr[i],arr[j]]);
+    for(let j=i+1;j<arr.length;j++){
+      out.push([arr[i],arr[j]]);
+    }
   }
+  return out;
+}
+
+function combinations3(arr){
+  const out=[];
+
+  function loop(start, current){
+    if(current.length === 3){
+      out.push(current);
+      return;
+    }
+
+    for(let i=start;i<arr.length;i++){
+      loop(i+1,[...current,arr[i]]);
+    }
+  }
+
+  loop(0,[]);
   return out;
 }
 
@@ -207,17 +227,30 @@ function calculate(){
   const fineTune=0.11 + seededRandom(seed)*(0.99-0.11);
   const probabilityIndex=Math.round((baseScore+fineTune)*100)/100;
 
-  // 5. WIN 5 ตัว
-  const winSet=new Set([d1,d2,(h+1)%10,(l_u+2)%10,5]);
-  while(winSet.size<5){
-    winSet.add((winSet.size*3+7)%10);
-  }
-  const winList=[...winSet].sort((a,b)=>a-b);
+ // 5. WIN6 V10
+const winSet=new Set([
+  d1,
+  d2,
+  (h+1)%10,
+  (l_u+2)%10,
+  (h+t)%10,
+  (t+u)%10
+]);
+
+while(winSet.size < 6){
+  const next = Math.floor(Math.random()*10);
+  winSet.add(next);
+}
+
+const winList=[...winSet];
 
   // 6. เจาะชุด
   const pairList=combinations(winList,2);
-  const set2d=pairList.slice(0,8).map(p=>`${p[0]}${p[1]}`);
-  const set3d=pairList.slice(0,4).map(p=>`${winList[0]}${p[0]}${p[1]}`);
+  const set2d=pairList.slice(0,12).map(p=>`${p[0]}${p[1]}`);
+  const set3d = combinations3(winList)
+  .slice(0,6)
+
+ .map(p=>p.join(''));
 
   document.getElementById('previousResult').textContent=`บน ${threeDigits} | ล่าง ${twoDigits}`;
   document.getElementById('probability').textContent=`${probabilityIndex.toFixed(2)}%`;
